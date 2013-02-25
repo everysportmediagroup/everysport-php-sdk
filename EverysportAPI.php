@@ -19,7 +19,7 @@ class EverysportAPI {
     public function __construct($apikey, $endpoint = null) {
 
         if(empty($apikey))
-            throw new Exception("Please provide an apikey to .");
+            throw new Exception("Please provide an apikey.");
 
         $this->apikey = $apikey;
 
