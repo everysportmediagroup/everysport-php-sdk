@@ -9,12 +9,9 @@
 class EverysportAPI {
 
     /* Default endpoint using the latest version of everysport api. Using trailing slash. */
-    //public static $ENDPOINT = "http://api.everysport.com/v1/";
-    public static $ENDPOINT = "http://api-everysport.appspot.com/v0/";
-    public static $DEBUG = false;
-
+    private $endpoint = "http://api.everysport.com/v1/";
     private $apikey;
-
+    private $debug = false;
 
     public function __construct($apikey, $endpoint = null) {
 
@@ -36,7 +33,7 @@ class EverysportAPI {
             $query = $query."&".$key."=".$value ;
         }
 
-        $url = EverysportAPI::$ENDPOINT . $path . "?apikey=" . $this->apikey . $query;
+        $url = $this->endpoint . $path . "?apikey=" . $this->apikey . $query;
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
