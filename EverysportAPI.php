@@ -13,19 +13,26 @@ class EverysportAPI {
     private $apikey;
     private $debug = false;
 
+
     public function __construct($apikey, $endpoint = null) {
 
-        if(empty($apikey))
+        /*if(empty($apikey)) {
             throw new Exception("Please provide an apikey.");
+        }*/
 
         $this->apikey = $apikey;
 
-        if(!empty($endpoint))
+        if(!empty($endpoint)) {
             $this->endpoint = $endpoint;
+        }
 
     }
 
     public function doGETRequest($path, $params = array()) {
+        if(empty($this->apikey)) {
+            throw new Exception("Please provide an apikey.");
+        }
+
 
         /* Set all query params */
         $query = "";
@@ -41,7 +48,17 @@ class EverysportAPI {
         $resp = curl_exec($ch);
         curl_close($ch);
 
-        return $resp;
+        $data = json_decode($resp);
+
+        if(!$data) {
+            if(json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Parsing error in response from Everysport API: ' . get_json_error_message());
+            } else {
+                throw new Exception('Empty response from Everysport API.');
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -76,6 +93,33 @@ class EverysportAPI {
             throw new Exception("league id is required");
 
         $path = "leagues/".$leagueId."/standings";
+
+        return $this->doGETRequest($path, $params);
+    }
+
+    /**
+     * Get sports
+     *
+     * @return response format according to everysport api documentation
+     * @throws Exception
+     */
+    public function listSports() {
+
+        $path = "sports";
+
+        return $this->doGETRequest($path);
+    }
+
+    /**
+     * Get leagues
+     *
+     * @return response format according to everysport api documentation
+     *      * @param array $params
+     * @throws Exception
+     */
+    public function listLeagues($params = array()) {
+
+        $path = "leagues";
 
         return $this->doGETRequest($path, $params);
     }
