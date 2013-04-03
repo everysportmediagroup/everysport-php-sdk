@@ -7,13 +7,18 @@ $es = new EverysportAPI("123abc");
 /**
  * Get events for a league
  */
+$response = $es->listLeagueEvents(54258, array("limit" => 10));
+echo print_r($response);
 
-$response = $es->listEvents(54258, array("limit" => 10, "callback" => "myfunc"));
-echo $response;
+/**
+ * Get events
+ */
+$response = $es->listEvents(array("limit" => 10));
+echo print_r($response);
 
 
 /**
  * Get standings for a league
  */
-$response = $es->listStandings(54258, array("type" => "total", "callback" => "myfunc"));
-echo $response;
+$response = $es->listLeagueStandings(54258, array("type" => "total"));
+echo print_r($response);
