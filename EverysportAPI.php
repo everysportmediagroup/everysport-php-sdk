@@ -52,7 +52,7 @@ class EverysportAPI {
 
         if(!$data) {
             if(json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception('Parsing error in response from Everysport API: ' . get_json_error_message());
+                throw new Exception('Parsing error in response from Everysport API with url: ' . $url . ' message: ' . get_json_error_message(), 0, new Exception($resp));
             } else {
                 throw new Exception('Empty response from Everysport API.');
             }
