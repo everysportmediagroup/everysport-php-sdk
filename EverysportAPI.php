@@ -52,14 +52,29 @@ class EverysportAPI {
 
         if(!$data) {
             if(json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception('Parsing error in response from Everysport API: ' . get_json_error_message());
+                throw new Exception('Parsing error in response from Everysport API with url: ' . $url . ' message: ' . get_json_error_message(), 0, new Exception($resp));
             } else {
-                throw new Exception('Empty response from Everysport API.');
+                throw new Exception('Empty response from Everysport API with url: ' . $url);
             }
         }
 
         return $data;
     }
+
+    /**
+     * Get a list of events.
+     *
+     * @param array $params
+     * @return response format according to everysport api documentation
+     * @throws Exception
+     */
+    public function listEvents($params = array()) {
+
+        $path = "events";
+
+        return $this->doGETRequest($path, $params);
+    }
+
 
     /**
      * Get a list of events for specified league.
@@ -69,7 +84,7 @@ class EverysportAPI {
      * @return response format according to everysport api documentation
      * @throws Exception
      */
-    public function listEvents($leagueId, $params = array()) {
+    public function listLeagueEvents($leagueId, $params = array()) {
 
         if(empty($leagueId))
             throw new Exception("league id is required");
@@ -87,7 +102,7 @@ class EverysportAPI {
      * @return response format according to everysport api documentation
      * @throws Exception
      */
-    public function listStandings($leagueId, $params = array()) {
+    public function listLeagueStandings($leagueId, $params = array()) {
 
         if(empty($leagueId))
             throw new Exception("league id is required");
