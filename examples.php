@@ -2,7 +2,7 @@
 include_once("EverysportAPI.php");
 
 /** Initialize EverysportAPI Client */
-$es = new EverysportAPI("123abc");
+$es = new EverysportAPI("YOUR_API_KEY");
 
 /**
  * Get events for a league
