@@ -1,4 +1,4 @@
-This is an official PHP client for Everysport API.
+This is an official PHP client for the [Everysport API](https://github.com/menmo/everysport-api-documentation).
 
 ## Examples
 
