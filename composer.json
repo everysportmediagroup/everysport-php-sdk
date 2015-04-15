@@ -1,0 +1,13 @@
+{
+    "name": "menmo/everysport-php-sdk",
+    "description": "This is the official PHP client for the Everysport API.",
+    "keywords": ["everysport", "api"],
+    "type": "library",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:menmo/everysport-php-sdk.git"
+        }
+    ]
+}
+
