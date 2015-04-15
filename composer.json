@@ -8,6 +8,10 @@
             "type": "vcs",
             "url": "git@github.com:menmo/everysport-php-sdk.git"
         }
-    ]
+    ],
+    "autoload": {
+        "files": ["EverysportAPI.php"]
+    }
+
 }
 
