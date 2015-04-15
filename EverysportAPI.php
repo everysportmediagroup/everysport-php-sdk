@@ -4,23 +4,25 @@
  *
  * Preconditions is a valid apikey and that cURL is installed.
  *
- * Created by Fredrik, 2013-02-25
  */
 class EverysportAPI {
 
     /* Default endpoint using the latest version of everysport api. Using trailing slash. */
     private $endpoint = "http://api.everysport.com/v1/";
     private $apikey;
-    private $debug = false;
+    private $connect_timeout;
+    private $timeout;
 
 
-    public function __construct($apikey, $endpoint = null) {
+    public function __construct($apikey, $endpoint = null, $connect_timeout = 1, $timeout = 3) {
 
         /*if(empty($apikey)) {
             throw new Exception("Please provide an apikey.");
         }*/
 
         $this->apikey = $apikey;
+        $this->connect_timeout = $connect_timeout;
+        $this->timeout = $timeout;
 
         if(!empty($endpoint)) {
             $this->endpoint = $endpoint;
@@ -45,6 +47,10 @@ class EverysportAPI {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch,CURLOPT_ENCODING , "gzip");
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , $this->connect_timeout);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+
         $resp = curl_exec($ch);
         curl_close($ch);
 
@@ -104,8 +110,9 @@ class EverysportAPI {
      */
     public function listLeagueStandings($leagueId, $params = array()) {
 
-        if(empty($leagueId))
+        if(empty($leagueId)) {
             throw new Exception("league id is required");
+        }
 
         $path = "leagues/".$leagueId."/standings";
 
@@ -137,5 +144,17 @@ class EverysportAPI {
         $path = "leagues";
 
         return $this->doGETRequest($path, $params);
+    }
+
+    public function getPlayerStats($leagueId, $type, $params = array()) {
+        if(empty($leagueId)) {
+            throw new Exception("league id is required");
+        }
+
+        return $this->doGETRequest("/leagues/".$leagueId."/".$type, $params);
+    }
+
+    public function getSeasons($leagueId) {
+        return $this->doGETRequest("/leagues/".$leagueId."/seasons", array("limit" => 1000));
     }
 }
