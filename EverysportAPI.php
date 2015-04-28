@@ -157,4 +157,29 @@ class EverysportAPI {
     public function getSeasons($leagueId) {
         return $this->doGETRequest("/leagues/".$leagueId."/seasons", array("limit" => 1000));
     }
+
+    public function getCalender($competitionId, $teamId)
+    {
+        if (empty($this->apikey)) {
+            throw new Exception("Please provide an apikey.");
+        }
+
+        $teamQuery = "";
+        if ($teamId) {
+            $teamQuery = "&team=" . $teamId;
+        }
+
+        $url = $this->endpoint . "leagues/" . $competitionId . "/events.ics" . "?apikey=" . $this->apikey . $teamQuery;
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch,CURLOPT_ENCODING , "gzip");
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , $this->connect_timeout);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+
+        $resp = curl_exec($ch);
+        curl_close($ch);
+        return $resp;
+    }
 }
