@@ -43,16 +43,7 @@ class EverysportAPI {
         }
 
         $url = $this->endpoint . $path . "?apikey=" . $this->apikey . $query;
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch,CURLOPT_ENCODING , "gzip");
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , $this->connect_timeout);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-
-        $resp = curl_exec($ch);
-        curl_close($ch);
+        $resp = $this->getResponse($url);
 
         $data = json_decode($resp);
 
@@ -170,14 +161,16 @@ class EverysportAPI {
         }
 
         $url = $this->endpoint . "leagues/" . $competitionId . "/events.ics" . "?apikey=" . $this->apikey . $teamQuery;
+        return $this->getResponse($url);
+    }
 
+    public function getResponse($url) {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch,CURLOPT_ENCODING , "gzip");
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , $this->connect_timeout);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-
         $resp = curl_exec($ch);
         curl_close($ch);
         return $resp;
